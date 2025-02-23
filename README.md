@@ -36,7 +36,7 @@ https://lifehack.world/postgresql-fatal-role-postgres-does-not-exist/
 myuserがmydatabaseにアクセスする。
 
 具体的な動き：postgresの中に、mydatabase（データベース）を作成してmyuser（ユーザー名）でログインする。
-→好きなユーザー名にしても良いけどその場合はソースコードのapplicatio.propertiesの値も変えなあかん。
+→好きなユーザー名にしても良いけどその場合はソースコードのapplication.propertiesの値も変えなあかん。
 
 ```sh
 psql -U myuser -d mydatabase
