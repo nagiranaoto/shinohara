@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Cat Image</title>
+    <style>
+        .title-container {
+            display: flex;
+            align-items: center;
+        }
+        .title-container h1 {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Random Cat Image</h1>
+    <div class="title-container">
+        <h1>Random Cat Image</h1>
+        <form action="/cat" method="get">
+            <button type="submit">🐱を変える</button>
+        </form>
+    </div>
     <div>
         <img th:src="${catImageUrl}" alt="Cat Image"/>
     </div>
