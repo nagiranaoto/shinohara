@@ -1,9 +1,8 @@
 package com.example.spring_thymeleaf_app.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,32 +34,43 @@ public class GoogleMapController {
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(url, String.class);
 
-        List<Map<String, String>> result = new ArrayList<>();
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response);
             JsonNode results = root.path("results");
 
-            for (JsonNode node : results) {
-                String name = node.path("name").asText();
-                String address = node.path("vicinity").asText();
-                String photoReference = node.path("photos").get(0).path("photo_reference").asText();
+            int resultCount = results.size(); // 結果の数を数える
+
+            if (resultCount > 0) {
+                Random random = new Random();
+                int randomIndex = random.nextInt(resultCount); // ランダムに数字を選ぶ
+
+                JsonNode selectedNode = results.get(randomIndex);
+                String name = selectedNode.path("name").asText();
+                String address = selectedNode.path("vicinity").asText();
+                String placeId = selectedNode.path("place_id").asText();
+                String photoReference = selectedNode.path("photos").get(0).path("photo_reference").asText();
 
                 // PhotoリクエストURLを生成
-                String photoUrl = String.format("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=%s&key=%s",
+                String photoUrl = String.format("https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=%s&key=%s",
                                                 photoReference, apiKey);
+
+                // Google Mapsの店舗リンクを生成
+                String mapUrl = String.format("https://www.google.com/maps/place/?q=place_id:%s", placeId);
 
                 Map<String, String> item = new HashMap<>();
                 item.put("name", name);
                 item.put("address", address);
                 item.put("photoUrl", photoUrl);
-                result.add(item);
+                item.put("mapUrl", mapUrl);
+                model.addAttribute("result", item); // 選んだ数字番目の値だけをモデルに格納
+            } else {
+                model.addAttribute("result", null);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        model.addAttribute("result", result);
         return "result";
     }
 }
