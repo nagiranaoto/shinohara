@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <ul>
+        <li th:each="item : ${result}">
+            <img th:src="${item.photoUrl}" alt="Photo" /> <!-- iconからphotoUrlに変更 -->
+            <span th:text="${item.name}"></span>
+            <span th:text="${item.address}"></span>
+        </li>
+    </ul>
+</body>
+</html>
