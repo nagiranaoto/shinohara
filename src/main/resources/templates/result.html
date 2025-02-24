@@ -3,15 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Search Results</title>
+    <style>
+        .large-photo {
+            width: 800px;
+            height: auto; /* アスペクト比を維持 */
+        }
+        .center-content {
+            text-align: center;
+        }
+        .center-content img {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Search Results</h1>
-    <ul>
-        <li th:each="item : ${result}">
-            <img th:src="${item.photoUrl}" alt="Photo" /> <!-- iconからphotoUrlに変更 -->
-            <span th:text="${item.name}"></span>
-            <span th:text="${item.address}"></span>
-        </li>
-    </ul>
+    <h1 class="center-content">今日はここで飯食おう！！！</h1>
+    <div th:if="${result != null}" class="center-content">
+        <img th:src="${result.photoUrl}" alt="Photo" class="large-photo" />
+        <span th:text="${result.name}"></span><br>
+        <span th:text="${result.address}"></span><br>
+        <a th:href="${result.mapUrl}" target="_blank">Google Mapsで見る</a> <!-- Google Mapsのリンクを追加 -->
+    </div>
+    <div th:if="${result == null}">
+        <p>No results found.</p>
+    </div>
 </body>
 </html>
